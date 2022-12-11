@@ -5,4 +5,4 @@
 .env*.local
 
 # JSON config
-.config.json
+/config.json
