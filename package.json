@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/garrettprince/joody/issues"
   },
-  "homepage": "https://github.com/garrettprince/joody#readme"
+  "homepage": "https://github.com/garrettprince/joody#readme",
+  "dependencies": {
+    "discord.js": "^14.7.1"
+  }
 }
