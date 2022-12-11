@@ -1,3 +1,5 @@
+const { REST } = require("@discordjs/rest");
+const Discord = require("discord.js");
 const fs = require("node:fs");
 const path = require("node:path");
 const { Routes } = require("discord-api-types/v9");
@@ -5,58 +7,68 @@ const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 const { Player } = require("discord-player");
 const { token } = require("./config.json");
 
-// Create a new client instance
+const LOAD_SLASH = process.argv[2] == "load";
+
+const CLIENT_ID = "";
+const GUILD_ID = "";
+
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
 });
 
 client.commands = new Collection();
 
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs
-  .readdirSync(commandsPath)
-  .filter((file) => file.endsWith(".js"));
+client.slashcommands = new Discord.Collection();
+client.player = new Player(client, {
+  ytdlOptions: {
+    quality: "highestaudio",
+    highWaterMark: 1 << 25,
+  },
+});
 
-for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = require(filePath);
-  // Set a new item in the Collection with the key as the command name and the value as the exported module
-  if ("data" in command && "execute" in command) {
-    client.commands.set(command.data.name, command);
-  } else {
-    console.log(
-      `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
-    );
-  }
+let commands = [];
+
+const slashFiles = fs
+  .readdirSync("./slash")
+  .filter((file) => file.endsWith(".js"));
+for (const file of slashFiles) {
+  const slashcmd = require(`./slash/${file}`);
+  client.slashcommands.set(slashcmd.data.name, slashcmd);
+  if (LOAD_SLASH) commands.push(slashcmd.data.toJSON());
 }
 
-// When the client is ready, run this code (only once)
-// We use 'c' for the event parameter to keep it separate from the already defined 'client'
-client.once(Events.ClientReady, (c) => {
-  console.log(`Ready! Logged in as ${c.user.tag}`);
-});
-
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  console.log(interaction);
-
-  const command = interaction.client.commands.get(interaction.commandName);
-
-  if (!command) {
-    console.error(`No command matching ${interaction.commandName} was found.`);
-    return;
-  }
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: "There was an error while executing this command!",
-      ephemeral: true,
+if (LOAD_SLASH) {
+  const rest = new REST({ version: "9" }).setToken(TOKEN);
+  console.log("Deploying slash commands");
+  rest
+    .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+      body: commands,
+    })
+    .then(() => {
+      console.log("Successfully loaded");
+      process.exit(0);
+    })
+    .catch((err) => {
+      if (err) {
+        console.log(err);
+        process.exit(1);
+      }
     });
-  }
-});
+} else {
+  client.on("ready", () => {
+    console.log(`Logged in as ${client.user.tag}`);
+  });
+  client.on("interactionCreate", (interaction) => {
+    async function handleCommand() {
+      if (!interaction.isCommand()) return;
 
-// Log in to Discord with your client's token
-client.login(token);
+      const slashcmd = client.slashcommands.get(interaction.commandName);
+      if (!slashcmd) interaction.reply("Not a valid slash command");
+
+      await interaction.deferReply();
+      await slashcmd.run({ client, interaction });
+    }
+    handleCommand();
+  });
+  client.login(token);
+}
