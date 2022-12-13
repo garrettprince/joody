@@ -8,11 +8,11 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
 
     if (!queue)
-      return await interaction.editReply("There are no songs in the queue");
+      return await interaction.editReply("*looks around* Stop what, honeypie??!!? There ain't no sound playin round here at the moment!");
 
     queue.setPaused(true);
     await interaction.editReply(
-      "Music has been paused! Use `/resume` to resume the music"
+      "*DING DING* One hot pause comin' right up! Use `/resume` to resume the music"
     );
   },
 };

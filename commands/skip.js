@@ -9,7 +9,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
 
     if (!queue)
-      return await interaction.editReply("There are no songs in the queue");
+      return await interaction.editReply("No songs in the queue, you know what to do!");
 
     const currentSong = queue.current;
 
@@ -17,7 +17,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         new EmbedBuilder()
-          .setDescription(`${currentSong.title} has been skipped!`)
+          .setDescription(`${currentSong.title} has been skipped! Boy howdy! West Philly Pancake platters on the house!`)
           .setThumbnail(currentSong.thumbnail),
       ],
     });

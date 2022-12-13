@@ -8,11 +8,11 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
 
     if (!queue)
-      return await interaction.editReply("There are no songs in the queue");
+      return await interaction.editReply("We don't play nothin' when there's nothin' in the queue round here!");
 
     queue.setPaused(false);
     await interaction.editReply(
-      "Music has been resumed!"
+      "You hear that, fellas?! Meat's back on the menu! *does a big shimmy and a double wink*"
     );
   },
 };
