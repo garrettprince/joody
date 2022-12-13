@@ -17,21 +17,21 @@ module.exports = {
             .setRequired(true)
         )
     )
-    // .addSubcommand((subcommand) =>
-    //   subcommand
-    //     .setName("playlist")
-    //     .setDescription("Loads a playlist of songs from a url")
-    //     .addStringOption((option) =>
-    //       option
-    //         .setName("url")
-    //         .setDescription("the playlist's url")
-    //         .setRequired(true)
-    //     )
-    // )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("playlist")
+        .setDescription("Loads a playlist of songs from a url")
+        .addStringOption((option) =>
+          option
+            .setName("url")
+            .setDescription("the playlist's url")
+            .setRequired(true)
+        )
+    )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("search")
-        .setDescription("Searches for sogn based on provided keywords")
+        .setDescription("Searches for song based on provided keywords")
         .addStringOption((option) =>
           option
             .setName("searchterms")
@@ -42,7 +42,7 @@ module.exports = {
   run: async ({ client, interaction }) => {
     if (!interaction.member.voice.channel)
       return interaction.editReply(
-        "You need to be in a VC to use this command"
+        "You need to be in a Voice Chat to use this command, biscuit."
       );
 
     const queue = await client.player.createQueue(interaction.guild);
