@@ -48,6 +48,19 @@ module.exports = {
 
     const currentSong = queue.current;
 
+    if (interaction.options.getSubcommand() === "add") {
+      let url = interaction.options.getString("url");
+      const result = await client.player.search(url, {
+        requestedBy: interaction.user,
+        searchEngine: QueryType.YOUTUBE_VIDEO,
+      });
+      if (result.tracks.length === 0)
+        return interaction.editReply("No results");
+
+      const song = result.tracks[0];
+      await queue.addTrack(song);
+    }
+
     await interaction.editReply({
       embeds: [
         new EmbedBuilder()
