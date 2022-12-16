@@ -1,25 +1,20 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder } = require("discord.js");
+const { QueryType } = require("discord-player");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("queue")
     .setDescription("displays the current song queue")
-    .addNumberOption((option) =>
-      option
-        .setName("page")
-        .setDescription("Page number of the queue")
-        .setMinValue(1)
-        .addSubcommand((subcommand) =>
-          subcommand
-            .setName("add")
-            .setDescription("add song to queue")
-            .addStringOption((option) =>
-              option
-                .setName("searchterms")
-                .setDescription("the search keywords")
-                .setRequired(true)
-            )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("add")
+        .setDescription("add song to queue")
+        .addStringOption((option) =>
+          option
+            .setName("searchterms")
+            .setDescription("the search keywords")
+            .setRequired(true)
         )
     ),
 
