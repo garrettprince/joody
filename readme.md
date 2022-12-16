@@ -42,9 +42,9 @@ Adding to the queue does not currently work. Can only queue up one song at a tim
 ## To Do
 | Task | Status |
 |---|---|
-| Add to main Discord server | _incomplete_ |
-| Deploy to 24/7 VPS | _incomplete_ |
-| Fix queueing bug | _incomplete_ |
+| Add to main Discord server | :heavy_check_mark: |
+| Deploy to 24/7 VPS | :x: |
+| Fix queueing bug | :x: |
 
 
 ## Acknowledgements
