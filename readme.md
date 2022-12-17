@@ -37,14 +37,14 @@ Version 2: _not started_
 
 ## Issues
 
-Adding to the queue does not currently work. Can only queue up one song at a time. Will add feature in version 2.
+None currently
 
 ## To Do
 | Task | Status |
 |---|---|
-| Add to main Discord server | :heavy_check_mark: |
+| Add to main Discord server | :white_check_mark: |
 | Deploy to 24/7 VPS | :x: |
-| Fix queueing bug | :x: |
+| Fix queueing bug | :white_check_mark: |
 
 
 ## Acknowledgements
