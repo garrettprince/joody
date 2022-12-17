@@ -5,18 +5,7 @@ const { QueryType } = require("discord-player");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("queue")
-    .setDescription("displays the current song queue")
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName("add")
-        .setDescription("add song to queue")
-        .addStringOption((option) =>
-          option
-            .setName("searchterms")
-            .setDescription("the search keywords")
-            .setRequired(true)
-        )
-    ),
+    .setDescription("displays the current song queue"),
 
   run: async ({ client, interaction }) => {
     const queue = client.player.getQueue(interaction.guildId);
@@ -42,19 +31,6 @@ module.exports = {
       .join("\n");
 
     const currentSong = queue.current;
-
-    if (interaction.options.getSubcommand() === "add") {
-      let url = interaction.options.getString("url");
-      const result = await client.player.search(url, {
-        requestedBy: interaction.user,
-        searchEngine: QueryType.YOUTUBE_VIDEO,
-      });
-      if (result.tracks.length === 0)
-        return interaction.editReply("No results");
-
-      const song = result.tracks[0];
-      await queue.addTrack(song);
-    }
 
     await interaction.editReply({
       embeds: [

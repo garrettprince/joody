@@ -10,7 +10,7 @@ const { token } = require("./config.json");
 const LOAD_SLASH = process.argv[2] == "load";
 
 const CLIENT_ID = "894031093035073546";
-const GUILD_ID = "915711521525469266";
+const GUILD_ID = "992252000727207966";
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
