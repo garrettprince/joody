@@ -6,11 +6,10 @@ const { Routes } = require("discord-api-types/v9");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 const { Player } = require("discord-player");
 const { token } = require("./config.json");
+const { CLIENT_ID } = require("./config.json");
+const { GUILD_ID } = require("./config.json");
 
 const LOAD_SLASH = process.argv[2] == "load";
-
-const CLIENT_ID = "894031093035073546";
-const GUILD_ID = "992252000727207966";
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
